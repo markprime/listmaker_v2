@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-class ListSelectionRecyclerViewAdapter: RecyclerView.Adapter<ListSelectionViewHolder>(){
+class ListSelectionRecyclerViewAdapter(val lists : ArrayList<TaskList>): RecyclerView.Adapter<ListSelectionViewHolder>(){
 
     val listTitles = arrayOf("Shopping List", "Chores", "Android Tuts")
 
@@ -22,7 +22,7 @@ class ListSelectionRecyclerViewAdapter: RecyclerView.Adapter<ListSelectionViewHo
         if (holder !=null){
 
             holder.listPosition.text = (position + 1).toString()
-            holder.listTitle.text = listTitles[position]
+            holder.listTitle.text = lists.get(position).name
         }
 
     }
