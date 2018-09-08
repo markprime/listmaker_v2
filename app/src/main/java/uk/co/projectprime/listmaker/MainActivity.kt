@@ -1,5 +1,6 @@
 package uk.co.projectprime.listmaker
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
@@ -13,10 +14,15 @@ import android.widget.EditText
 
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ListSelectionRecyclerViewAdapter.ListSelectionRecyclerViewClickListener {
+
 
     lateinit var re_lists : RecyclerView
     val listDataManager: ListDataManager = ListDataManager(this)
+
+    companion object {
+        val INTENT_LIST_KEY = "list"
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         val lists = listDataManager.readLists()
         re_lists = findViewById(R.id.re_lists)
         re_lists.layoutManager = LinearLayoutManager(this)
-        re_lists.adapter = ListSelectionRecyclerViewAdapter(lists)
+        re_lists.adapter = ListSelectionRecyclerViewAdapter(lists, this)
 
 
 
@@ -78,8 +84,20 @@ class MainActivity : AppCompatActivity() {
 
 
             dialog.dismiss()
+            showListDetail(list)
         })
 
         builder.create().show()
+    }
+
+    private fun showListDetail(list: TaskList){
+        val listDetailIntent = Intent(this, ListDetailActivity::class.java)
+        listDetailIntent.putExtra(INTENT_LIST_KEY, list)
+        startActivity(listDetailIntent)
+    }
+
+
+    override fun listItemClicked(list: TaskList) {
+        showListDetail(list)
     }
 }
